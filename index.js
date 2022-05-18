@@ -9,7 +9,7 @@ app.use(cors())
 app.use(express.json())
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mjkpv.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
@@ -31,6 +31,15 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
         app.get('/tasks', async (req, res) => {
             const query = {}
             const result = await taskCollection.find(query).toArray()
+            res.send(result)
+        })
+
+        // Delete a single task api end point
+        app.delete('/deleteTask/:id', async (req, res) => {
+            const id = req.params
+            console.log(id);
+            const filter = { _id: ObjectId(id) }
+            const result = await taskCollection.deleteOne(filter)
             res.send(result)
         })
     }
