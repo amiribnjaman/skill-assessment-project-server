@@ -37,7 +37,6 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
         // Delete a single task api end point
         app.delete('/deleteTask/:id', async (req, res) => {
             const id = req.params
-            console.log(id);
             const filter = { _id: ObjectId(id) }
             const result = await taskCollection.deleteOne(filter)
             res.send(result)
